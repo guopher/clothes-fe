@@ -1,3 +1,6 @@
+# clothes-fe
+Front end client for clothes application
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
