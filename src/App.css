@@ -37,6 +37,30 @@
   }
 }
 
-.main-list {
-  display: flex
+
+.overall-view {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: flex-start;
+  /* gap: 10px; */
+}
+
+.add-item-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-item-view {
+  display: flex;
+  margin: 50px;
+  flex-direction: column;
+  border: 1px solid lavender
+}
+
+.clothes-list {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 2;
+  flex-wrap: wrap;
 }
