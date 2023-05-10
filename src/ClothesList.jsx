@@ -4,10 +4,6 @@ import {BASE_URL} from './requests';
 
 export const add_item = (itemName, companyName, priceBought) => {
   const url = `${BASE_URL}/api/add_item`
-  const name = companyName.length > 0 ? companyName : "Acme"
-  // console.log(`name: ${name}`)
-  // console.log(`companyName: ${companyName}`)
-  // console.log(`priceBought: ${priceBought}`)
   fetch(url, {
     method: 'POST',
     headers: {
@@ -16,11 +12,9 @@ export const add_item = (itemName, companyName, priceBought) => {
     body: JSON.stringify({
         item_name: itemName,
         price_bought: priceBought,
-        company: name,
+        company: companyName,
     })
   })
-    // .then(response => response.json())
-    // .then(data => console.log(data))
     .catch(error => {
       console.log(error)
     })
@@ -30,7 +24,6 @@ const ClothesList = (companyName) => {
   const [clothes, setClothes] = useState([])
   useEffect(() => {
     get_items()
-    console.log('re-render')
   }, [])
 
   const get_items = () => {
@@ -38,7 +31,6 @@ const ClothesList = (companyName) => {
     fetch(url)
       .then(response => response.json())
       .then(data => {
-        // console.log(data)
         setClothes(data)
       })
       .catch(error => {
@@ -50,7 +42,7 @@ const ClothesList = (companyName) => {
   const updateNumWears = (item_id, updatedNumWears) => {
     setClothes(prevClothes => {
       const updatedClothes = [...prevClothes];
-      const clothingIndex = updatedClothes.findIndex(c => c.item_id === item_id);
+      const clothingIndex = updatedClothes.findIndex(c => c._id === item_id);
       updatedClothes[clothingIndex] = {
         ...updatedClothes[clothingIndex],
         num_wears: updatedNumWears,
@@ -63,7 +55,7 @@ const ClothesList = (companyName) => {
     setClothes(prevClothes => {
       console.log('entered here')
       const updatedClothes = [...prevClothes];
-      const clothingIndex = updatedClothes.findIndex(c => c.item_id === item_id);
+      const clothingIndex = updatedClothes.findIndex(c => c._id === item_id);
       updatedClothes[clothingIndex] = {
         ...updatedClothes[clothingIndex],
         is_show: updatedIsShow,
@@ -73,7 +65,7 @@ const ClothesList = (companyName) => {
   }
 
   const clothesList = clothes.length !== 0 ? clothes.filter(item => item.is_show === true).map(item => (
-      <Clothes key={item.item_id} clothes={item} onUpdateNumWears={updateNumWears} onUpdateIsShow={updateIsShow} />
+      <Clothes key={item._id} clothes={item} onUpdateNumWears={updateNumWears} onUpdateIsShow={updateIsShow} />
   )) : null
 
   return clothesList

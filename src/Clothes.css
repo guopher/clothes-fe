@@ -1,0 +1,25 @@
+.clothes {
+  border: 1px solid yellow;
+}
+
+.add-wears {
+  background-color: teal;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.add-wears:hover {
+  background-color: darkgreen;
+  cursor: pointer;
+}
+
+.delete-item {
+  background-color: cornflowerblue;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.delete-item:hover {
+  background-color: red;
+  cursor: pointer;
+}

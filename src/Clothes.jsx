@@ -1,14 +1,12 @@
 import {add_wears} from './requests'
 import {delete_item} from './requests'
 import './Clothes.css';
-import {BASE_URL} from './requests';
 
 const Clothes = (props) => {
-
   const updateNumWears = () => {
     const item = props.clothes
-    const item_id = item.item_id
-    add_wears(item_id)
+    const item_id = item._id
+    add_wears(item_id, item.num_wears + 1)
     props.onUpdateNumWears(item_id, item.num_wears + 1)
   }
 
@@ -23,12 +21,10 @@ const Clothes = (props) => {
 
   const updateIsShow = () => {
     const item = props.clothes
-    const item_id = item.item_id
+    const item_id = item._id
     delete_item(item_id)
-    console.log(item_id)
     props.onUpdateIsShow(item_id, false)
   }
-
 
   return (
     <div className ='clothes'>
