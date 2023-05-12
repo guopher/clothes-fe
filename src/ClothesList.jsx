@@ -1,44 +1,41 @@
 import Clothes from './Clothes'
 import {useState, useEffect} from 'react'
 import {BASE_URL} from './requests';
+import { getBearerToken } from './utilities';
+import { POST, json_format } from './constants';
 
-export const add_item = (itemName, companyName, priceBought) => {
-  const url = `${BASE_URL}/api/add_item`
-  fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-        item_name: itemName,
-        price_bought: priceBought,
-        company: companyName,
-    })
-  })
-    .catch(error => {
-      console.log(error)
-    })
-}
-
-const ClothesList = (companyName) => {
+const ClothesList = (props) => {
   const [clothes, setClothes] = useState([])
+  const isLoggedIn = props.isLoggedIn
+
   useEffect(() => {
-    get_items()
-  }, [])
+    if (isLoggedIn) {
+      console.log(`isLoggedIn: ${isLoggedIn}`)
+      get_items()
+    }
+  }, [isLoggedIn])
 
   const get_items = () => {
-    const url = `${BASE_URL}/api/get_items`
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        setClothes(data)
+    if (isLoggedIn) {
+      const url = `${BASE_URL}/api/get_items`
+      fetch(url, {
+        method: POST,
+        headers: {
+          'Content-Type': json_format,
+          'Authorization': `Bearer ${getBearerToken()}`
+        },
       })
-      .catch(error => {
-        console.log(error)
-      })
+        .then(response => response.json())
+        .then(data => {
+          setClothes(data)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }
   }
 
-
+  // TODO: is there a way to consolidate updateNumWears and updateIsShow
   const updateNumWears = (item_id, updatedNumWears) => {
     setClothes(prevClothes => {
       const updatedClothes = [...prevClothes];
@@ -53,9 +50,9 @@ const ClothesList = (companyName) => {
 
   const updateIsShow = (item_id, updatedIsShow) => {
     setClothes(prevClothes => {
-      console.log('entered here')
       const updatedClothes = [...prevClothes];
       const clothingIndex = updatedClothes.findIndex(c => c._id === item_id);
+      // TODO: remove bug where if you delete clothing item, it doesn't actually remove the clothing item. only sets to false
       updatedClothes[clothingIndex] = {
         ...updatedClothes[clothingIndex],
         is_show: updatedIsShow,
@@ -66,7 +63,7 @@ const ClothesList = (companyName) => {
 
   const clothesList = clothes.length !== 0 ? clothes.filter(item => item.is_show === true).map(item => (
       <Clothes key={item._id} clothes={item} onUpdateNumWears={updateNumWears} onUpdateIsShow={updateIsShow} />
-  )) : null
+  )) : <h6>Add some more clothes!</h6>
 
   return clothesList
 }

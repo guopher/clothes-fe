@@ -1,55 +1,36 @@
 import './App.css';
 import {useState, useEffect} from 'react'
-import {add_item} from './ClothesList'
+import {add_item} from './requests'
 import ClothesList from './ClothesList'
 import Welcome from './Welcome'
 import { GoogleLogin } from '@react-oauth/google';
 import { googleLogout } from '@react-oauth/google';
-import { GET_GOOGLE_USER_INFO } from './requests';
+import { GET, GET_GOOGLE_USER_INFO, json_format } from './constants';
 import {BASE_URL} from './requests';
+import { getBearerToken } from './utilities';
+import { POST, jwtToken } from './constants';
 
 const App = () => {
   const [companyName, setCompanyName] = useState("")
   const [priceBought, setPriceBought] = useState("")
   const [itemName, setItemName] = useState("")
-  const [token, setToken] = useState("")
-  const [givenName, setGivenName] = useState("")
-  const [name, setName] = useState("")
-  const [familyName, setFamilyName] = useState("")
-  const [picture, setPicture] = useState("")
-  const [isLoggingIn, setIsLoggingIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [givenName, setGivenName] = useState(null)
+  const [name, setName] = useState(null)
+  const [familyName, setFamilyName] = useState(null)
+  const [picture, setPicture] = useState(null)
+  const [sub, setSub] = useState(null)
 
   useEffect(() => {
-    // TODO:
-    // store user information in the DB so we don't have to call Google everytime
-    // if there is a change in information when we sign in/sign out, then we should update this info in DB
-    if (token.length > 0) {
-      const url = `${GET_GOOGLE_USER_INFO}${token}`
-      fetch(url)
-        .then(response => response.json())
-        .then(data => {
-          setGivenName(data.given_name)
-          setFamilyName(data.family_name)
-          setPicture(data.picture)
-          setName(data.name)
-          setIsLoggingIn(true)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    }
-  }, [token])
-
-  useEffect(() => {
-    if (isLoggingIn) {
-      const url = `${BASE_URL}/api/edit_user`
+    if (sub !== null) {
+      const url = `${BASE_URL}/api/login`
       fetch(url, {
-        method: 'POST',
+        method: POST,
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': json_format,
         },
         body: JSON.stringify({
-          token: token,
+          sub: sub,
           givenName: givenName,
           familyName: familyName,
           picture: picture,
@@ -57,42 +38,79 @@ const App = () => {
       })
         .then(response => response.json())
         .then(data => {
-          setIsLoggingIn(false)
+          localStorage.setItem('jwtToken', data.token)
+          setIsLoggedIn(true)
         })
         .catch(error => {
           console.log(error)
-          setIsLoggingIn(false)
         })
     }
-  }, [isLoggingIn])
+  }, [sub])
+
+
+  useEffect(() => {
+    const token = getBearerToken()
+    if (token !== null && token !== undefined && token !== 'undefined') {
+      setIsLoggedIn(true)
+      const url = `${BASE_URL}/api/get_user`
+      fetch(url, {
+        method: GET,
+        headers: {
+          'Authorization': `Bearer ${getBearerToken()}`
+        }
+      })
+        .then(response => response.json())
+        .then(data => {
+          setFamilyName(data.familyName)
+          setGivenName(data.givenName)
+          setPicture(data.google_picture_url)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    } else {
+      setIsLoggedIn(false)
+    }
+  }, [])
+
 
   const handleSubmit = () => {
-    if (itemName === "" || companyName === "" || itemName === "") {
+    if (itemName.length === 0 || companyName.length === 0 || itemName.length === 0) {
       alert('please enter all fields')
     } else {
-      add_item(itemName, companyName, priceBought)
+      add_item(itemName, companyName, priceBought, picture)
     }
   }
 
   const onSuccess = (response) => {
-    const url = `${BASE_URL}/api/login`
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        oauth_token: response.credential,
-      })
-    })
+    const credential = response.credential
+    const google_url = `${GET_GOOGLE_USER_INFO}${credential}`
+    fetch(google_url)
       .then(response => response.json())
       .then(data => {
-        setToken(response.credential)
+        setGivenName(data.given_name)
+        setFamilyName(data.family_name)
+        setPicture(data.picture)
+        setName(data.name)
+        setSub(data.sub)
       })
       .catch(error => {
         console.log(error)
       })
   }
+
+  // useEffect(() => {
+  //   const url = `${BASE_URL}/api/edit_user`
+  //   fetch(url, {
+  //     method: POST,
+  //     headers: {
+  //       'Content-Type': json_format,
+  //     },
+  //     body: JSON.stringify({
+  //       sub: sub
+  //     })
+  //   })
+  // }, [givenName, familyName, picutre, name])
 
   const onError = (error) => {
     console.log(error)
@@ -100,6 +118,25 @@ const App = () => {
 
   const onLogout = () => {
     // TODO: put real logout experience
+    const url = `${BASE_URL}/api/logout`
+    const token = getBearerToken()
+    fetch(url, {
+      method: POST,
+      headers: {
+        'Content-Type': json_format,
+        'Authorization': `Bearer ${token}`
+      },
+    })
+      .then(response => response.json())
+      .then(() => {
+        localStorage.removeItem(jwtToken)
+        setIsLoggedIn(false)
+        setSub(null)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    // TODO: figure out what this method does
     googleLogout()
   }
 
@@ -108,9 +145,9 @@ const App = () => {
       <header className="App-header">
         <Welcome />
         <GoogleLogin onSuccess={onSuccess} onError={onError} />
-        <h6 onClick={onLogout}>Logout</h6>
-        {name.length > 0 ? <h6>{name}</h6> : null}
-        {picture.length > 0 ? <img src={picture} referrerPolicy='no-referrer' /> : null}
+        {isLoggedIn && <h6 className='logout' onClick={onLogout}>Logout</h6>}
+        {isLoggedIn && familyName !== null ? <h4>{`${givenName} ${familyName}`}</h4> : null}
+        {isLoggedIn && picture !== null ? <img src={picture} referrerPolicy='no-referrer' /> : null}
         <div className='overall-view'>
           <div className='add-item-view'>
             <h3>Add Item</h3>
@@ -133,7 +170,7 @@ const App = () => {
           </div>
           <div className='clothes-list'>
             <h3>Closet</h3>
-            <ClothesList companyName={companyName !== "" ? companyName : 'Acme'}/>
+            {isLoggedIn && <ClothesList isLoggedIn={isLoggedIn} />}
           </div>
         </div>
       </header>
