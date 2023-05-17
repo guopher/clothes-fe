@@ -190,7 +190,7 @@ const ClothesList = (props) => {
     <div>
       <div className='filter-items-container'>
         <div> 
-          <input className='filter-box' type="text" placeholder='shoes...' onChange={filterOnChange}/>
+          <input className='filter-box' type="text" placeholder='filter items here!' onChange={filterOnChange}/>
         </div>
         <select onChange={handleChange}>
           <option value="">Select sort</option>

@@ -1,4 +1,5 @@
 import './App.css';
+import { GoogleLogin } from '@react-oauth/google';
 import {useState, useEffect} from 'react'
 import {add_item} from './requests'
 import ClothesList from './ClothesList'
@@ -8,6 +9,7 @@ import { getBearerToken } from './utilities';
 import { POST, jwtToken } from './constants';
 import AddItem from './AddItem';
 import TopBar from './TopBar';
+import { JUICY_MANGO } from './strings';
 
 const App = () => {
   const [companyName, setCompanyName] = useState("")
@@ -136,37 +138,52 @@ const App = () => {
       })
   }
 
+  const loggedInElement = () => {
+      return (
+        <div>
+          <TopBar 
+            onLogout={onLogout}
+            isLoggedIn={isLoggedIn}
+            givenName={givenName}
+            familyName={familyName}
+            picture={picture}
+            onSuccess={onSuccess}
+            onError={onError}
+          />
+          <div className='overall-view'>
+            <AddItem 
+              onHandleSubmit={handleSubmit}
+              itemName={itemName}
+              companyName={companyName}
+              priceBought={priceBought}
+              onSetItemName={setItemName}
+              onSetCompanyName={setCompanyName}
+              onSetPriceBought={setPriceBought}
+              />
+            <div className='clothes-container'>
+              <h3>Closet</h3>
+              <div>
+                <ClothesList error={error} isLoggedIn={isLoggedIn} />
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+  }
+
+  const loggedOutElement = () => {
+    return (
+      <div className='logged-out-container'>
+        <h1 className='title'>{JUICY_MANGO}</h1>
+        <GoogleLogin onSuccess={onSuccess} onError={onError} />
+      </div>
+    )
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <TopBar 
-          onLogout={onLogout}
-          isLoggedIn={isLoggedIn}
-          givenName={givenName}
-          familyName={familyName}
-          picture={picture}
-          onSuccess={onSuccess}
-          onError={onError}
-        />
-        <div className='overall-view'>
-          {isLoggedIn && 
-          <AddItem 
-            onHandleSubmit={handleSubmit}
-            itemName={itemName}
-            companyName={companyName}
-            priceBought={priceBought}
-            onSetItemName={setItemName}
-            onSetCompanyName={setCompanyName}
-            onSetPriceBought={setPriceBought}
-            />
-          }
-        <div className='clothes-container'>
-          {isLoggedIn && <h3>Closet</h3>}
-          <div>
-            {isLoggedIn && <ClothesList error={error} isLoggedIn={isLoggedIn} />}
-          </div>
-        </div>
-        </div>
+        {isLoggedIn ? loggedInElement() : loggedOutElement()}
       </header>
     </div>
   );

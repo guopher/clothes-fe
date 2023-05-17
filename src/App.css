@@ -60,6 +60,10 @@ body {
   cursor: pointer;
 }
 
+.add-item-submit:hover {
+  background-color: #ff9e7a;
+}
+
 .form-group {
   display: flex;
   flex-direction: column;
@@ -78,7 +82,7 @@ body {
 }
 
 label {
-  font-weight: bold;
+  font-size: 31px;
 }
 
 .add-item-container {
@@ -96,7 +100,7 @@ label {
   width: 300px;
   align-items: flex-start;
   justify-content: flex-start;
-  margin: 10px;
+  margin-left: 30px;
 }
 
 .add-item-view {
@@ -110,3 +114,8 @@ label {
   flex-grow: 2;
 }
 
+.logged-out-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
