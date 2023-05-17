@@ -60,3 +60,28 @@ export const add_item = (itemName, companyName, priceBought) => {
       console.log(error)
     })
 }
+
+// export const pin_item = (item_id, isPin) => {
+//   const url = `${BASE_URL}/api/pin_item`
+//   const bearer = getBearerToken()
+//   console.log(`bearer: ${bearer}}`)
+//   fetch(url, {
+//     method: POST,
+//     headers: {
+//       'Content-Type': json_format,
+//       'Authorization': `Bearer: ${getBearerToken()}`
+//     },
+//     body: JSON.stringify({
+//         item_name: itemName,
+//         price_bought: priceBought,
+//         company: companyName,
+//     })
+//   })
+//     // .then(response => response.json())
+//     // .then(data => {
+      
+//     // })
+//     .catch(error => {
+//       console.log(error)
+//     })
+// }

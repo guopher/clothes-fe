@@ -1,22 +1,37 @@
+.clothes-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  overflow-y: auto;
+}
+
 .clothes {
-  border: 1px solid yellow;
+  margin: 10px;
+  border: 1px solid #535C6D;
+  border-radius: 15px;
+  flex-wrap: wrap;
+  width: 250px;
+}
+
+.clothes-info {
+  margin: 10px;
 }
 
 .add-wears {
-  background-color: teal;
+  background-color: darkgreen;
   margin-left: 20px;
   margin-right: 20px;
-}
-
-.add-wears:hover {
-  background-color: darkgreen;
   cursor: pointer;
+  border-radius: 15px;
+  padding: 3px;
 }
 
 .delete-item {
   background-color: cornflowerblue;
   margin-left: 20px;
   margin-right: 20px;
+  border-radius: 15px;
+  padding: 3px;
 }
 
 .delete-item:hover {
@@ -26,4 +41,22 @@
 
 p {
   font-size: medium;
+}
+
+.filter-items-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.filter-box {
+  border-radius: 5px;
+  margin-left: 10px;
+  font-size: 16px;
+}
+
+.item-pin {
+  cursor: pointer;
+  background-color: darkgray;
+  border-radius: 15px;
 }

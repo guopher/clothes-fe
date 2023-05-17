@@ -13,8 +13,12 @@
   }
 }
 
+body {
+  color: #e7eaed
+}
+
 .App-header {
-  background-color: #282c34;
+  background-color: #202124;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -40,37 +44,69 @@
 
 .overall-view {
   display: flex;
-  justify-content: space-between;
   flex-direction: row;
   align-items: flex-start;
-  /* gap: 10px; */
+  margin-top: 130px;
+  width: 90%;
+}
+
+.add-item-submit {
+  background-color: coral; 
+  color: white;
+  font-size: 20px;
+  padding: 10px 60px;
+  border-radius: 10px;
+  margin: 10px 0px;
+  cursor: pointer;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+}
+
+.label-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+}
+
+.input-container {
+  display: flex;
+  justify-content: flex-start;
+}
+
+label {
+  font-weight: bold;
+}
+
+.add-item-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  margin-right: 100px;
+  flex: 0 0 auto;
 }
 
 .add-item-form {
   display: flex;
+  color: white;
   flex-direction: column;
+  width: 300px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin: 10px;
 }
 
 .add-item-view {
   display: flex;
-  margin: 50px;
   flex-direction: column;
-  border: 1px solid lavender
 }
 
-.clothes-list {
+.clothes-container {
   display: flex;
   flex-direction: column;
   flex-grow: 2;
-  flex-wrap: wrap;
 }
 
-.logout {
-  background-color: orange;
-  padding: 10px;
-}
-
-.logout:hover {
-  background-color: lightcoral;
-  cursor: pointer;
-}
