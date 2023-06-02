@@ -1,4 +1,4 @@
-import {add_wears} from './requests'
+import {add_wears, pin_item} from './requests'
 import {delete_item} from './requests'
 import './Clothes.css';
 
@@ -21,7 +21,7 @@ const Clothes = (props) => {
     } else {
       message = 'Keep it up!'
     }
-    alert(message)
+    props.onAddWear(message)
   }
 
   const item = props.clothes
@@ -42,31 +42,36 @@ const Clothes = (props) => {
     const item_id = item._id
     delete_item(item_id)
     props.onUpdateIsShow(item_id, false)
+    props.onUndoDelete(itemName, showAgain)
   }
 
   const itemName = `${item.company} ${item.item_name}`
 
-  // const handlePin = () => {
-  //   console.log(item.isPinned)
-  //   console.log(item._id)
-  //   let pin = false
-  //   if (!item.isPinned || item.isPinned === undefined) {
-  //     item.isPinned = true
-  //     console.log(item)
-  //     console.log(`new: ${item.isPinned}`)
-  //   }
-  //   pin_item(item_id)
-  //   props.onUpdatePin(item._id, pin)
-  // }
+  const handlePin = () => {
+    if (!item.is_pinned || item.is_pinned === undefined) {
+      item.is_pinned = true
+    } else {
+      item.is_pinned = false
+    }
+    pin_item(item._id, item.is_pinned)
+    props.onUpdatePin(item._id, item.is_pinned)
+  }
+
+  const showAgain = () => {
+    const item = props.clothes
+    const item_id = item._id
+    delete_item(item_id, true)
+    props.onUpdateIsShow(item_id, true)
+  }
 
   return (
     <div className ='clothes'>
       <div className='clothes-info'>
-        <p>{itemName}</p>
+        <div onClick={handlePin} className='pin-icon'>📌</div>
+        <div className='item-name'>{itemName}</div>
         <p className='add-wears' onClick={updateNumWears}>Number of wears: {item.num_wears}</p>
         <p>Cost per wear: {costPerWear()}</p>
         <p className='delete-item' onClick={updateIsShow} >Delete</p>
-        {/* <p className='item-pin' onClick={handlePin}>Pin</p> */}
       </div>
     </div>
   )

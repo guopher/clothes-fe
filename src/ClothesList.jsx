@@ -84,6 +84,18 @@ const ClothesList = (props) => {
     });
   }
 
+  const updatePin = (item_id, updatedPin) => {
+    setClothes(prevClothes => {
+      const updatedClothes = [...prevClothes];
+      const clothingIndex = updatedClothes.findIndex(c => c._id === item_id);
+      updatedClothes[clothingIndex] = {
+        ...updatedClothes[clothingIndex],
+        is_pinned: updatedPin,
+      };
+      return updatedClothes;
+    });
+  }
+
   const showClothes = (item) => {
     if (filterValue === "") {
       return item.is_show
@@ -113,34 +125,21 @@ const ClothesList = (props) => {
     }
   }
 
-  const updatePin = (item_id, updatedPin) => {
-    setClothes(prevClothes => {
-      const updatedClothes = [...prevClothes];
-      const clothingIndex = updatedClothes.findIndex(c => c._id === item_id);
-      console.log(`clothingIndex: ${clothingIndex}`)
-      updatedClothes[clothingIndex] = {
-        ...updatedClothes[clothingIndex],
-        isPinned: updatedPin,
-      };
-      return updatedClothes;
-    });
-  }
 
   const clothesList = () => {
     if (error) {
       return <h5>Server is having some issues 😢</h5>
     } 
     
-    if (clothes && clothes.length === 0) {
-      return <h6>Add some more clothes!</h6>
-    }
-
-    const displayedList = getFilteredList().map(item => (
+    const displayedList = getFilteredList().filter(item => !item.is_pinned).map(item => (
         <Clothes key={item._id} 
                   clothes={item} 
                   onUpdateNumWears={updateNumWears} 
                   onUpdateIsShow={updateIsShow} 
-                  onUpdatePin={updatePin} />
+                  onUpdatePin={updatePin} 
+                  onUndoDelete={props.onUndoDelete}
+                  onAddWear={props.onAddWear}
+                  />
     ))
 
     if (displayedList.length === 0 && filterValue.length > 0) {
@@ -160,15 +159,18 @@ const ClothesList = (props) => {
   }
 
   const pinnedList = () => {
-    console.log('full list')
-    console.log(getFilteredList())
-    const pinned = getFilteredList().filter(item => item.isPinned)
-    console.log('pinned')
-    console.log(pinned)
+    const pinned = getFilteredList().filter(item => item.is_pinned).map(item => (
+        <Clothes key={item._id} 
+                  clothes={item} 
+                  onUpdateNumWears={updateNumWears} 
+                  onUpdateIsShow={updateIsShow} 
+                  onUpdatePin={updatePin} 
+                  onUndoDelete={props.onUndoDelete}
+                  onAddWear={props.onAddWear}
+                  />
+    ))
     return pinned
   }
-
-  // const pinnedList = [...clothesList()].filter(item => item.isPinned)
 
   const filterOnChange = event => {
     event.preventDefault()
@@ -185,15 +187,48 @@ const ClothesList = (props) => {
     }
   }
 
+  const numTotalClothes = getFilteredList().filter(item => !item.is_pinned).length + 
+                          getFilteredList().filter(item => item.is_pinned).length
+
+  const renderClothesAvailable = () => (
+    <>
+      <div className='section-title'>Pinned</div>
+      <div className='pinned-list'>
+        {pinnedList()}
+      </div>
+      <div className='section-title'>Others</div>
+      <div className='clothes-list'>
+        {clothesList()}
+      </div>
+    </>
+  )
+
+  const renderNoClothes = () => (
+    <div>
+      <img className={'img-closet'}src={require('./Closet.png')} alt={'Closet'}/>
+      <h6>Add some clothes to get started!</h6>
+    </div>
+  )
+
+
+  const renderClothesSection = () => {
+    // TODO: fix why props.isLoading is always false here, when it should update based on parent state value
+    console.log(`props.isLoading: ${props.isLoading}`)
+    if (props.isLoading) {
+      return null
+    }
+    return numTotalClothes > 0 ? renderClothesAvailable() : renderNoClothes()
+  }
 
   return (
     <div>
       <div className='filter-items-container'>
         <div> 
-          <input className='filter-box' type="text" placeholder='filter items here!' onChange={filterOnChange}/>
+          <input className='filter-box' type="text" placeholder='Filter' onChange={filterOnChange}/>
         </div>
         <select onChange={handleChange}>
           <option value="">Select sort</option>
+          {/* TODO: make this use arrows for up and down so there's less options to pick */}
           <option value={ALPHABETICAL}>A to Z</option>
           <option value={REVERSE_ALPHABETICAL}>Z to A</option>
           <option value={NUM_WEARS}>Highest number of wears to lowest</option>
@@ -202,10 +237,7 @@ const ClothesList = (props) => {
           <option value={REVERSE_COST_PER_WEAR}>Lowest cost per wear to highest</option>
         </select>
       </div>
-      <div className='clothes-list'>
-        {/* {pinnedList()} */}
-        {clothesList()}
-      </div>
+      {renderClothesSection()} 
     </div>
   )
 }

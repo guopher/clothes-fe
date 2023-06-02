@@ -14,12 +14,21 @@
 }
 
 body {
-  color: #e7eaed
+  /* color: #e7eaed */
+  background-color: #202124;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  width: 100%;
 }
 
 .App-header {
   background-color: #202124;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,7 +50,6 @@ body {
   }
 }
 
-
 .overall-view {
   display: flex;
   flex-direction: row;
@@ -62,6 +70,14 @@ body {
 
 .add-item-submit:hover {
   background-color: #ff9e7a;
+}
+
+.add-item-submit-disabled {
+  background-color: lightgray;
+  font-size: 20px;
+  padding: 10px 60px;
+  border-radius: 10px;
+  margin: 10px 0px;
 }
 
 .form-group {
@@ -88,9 +104,19 @@ label {
 .add-item-container {
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
   margin-right: 100px;
   flex: 0 0 auto;
+  flex-basis: 30%;
+}
+
+@media (max-width: 1400px) {
+  .add-item-container {
+    flex-basis: 20%;
+    margin-right: 0px;
+  }
+  .clothes-container {
+    flex-basis: 80%;
+  }
 }
 
 .add-item-form {
@@ -111,11 +137,21 @@ label {
 .clothes-container {
   display: flex;
   flex-direction: column;
-  flex-grow: 2;
+  flex-basis: 70%;
 }
 
 .logged-out-container {
   display: flex;
   align-items: center;
   flex-direction: column;
+}
+
+h5 {
+  margin-top: 0;
+}
+
+.submit-bug {
+  font-size: 12px;
+  align-self: right;
+  text-align: right;
 }

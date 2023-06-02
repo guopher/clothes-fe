@@ -28,12 +28,34 @@
 .logout {
   background-color: gray;
   padding: 10px;
-  margin-right: 25px;
+  margin-right: 10px;
   margin-left: 10px;
   border-radius: 15px;
+  cursor: pointer;
 }
 
 .logout:hover {
-  background-color: red;
+  background-color: lightgray;
+}
+
+.feedback {
+  background-color: gray;
+  padding: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+  border-radius: 15px;
   cursor: pointer;
+}
+
+.btn-bug {
+  background-color: gray;
+  padding: 10px;
+  margin-right: 25px;
+  margin-left: 10px;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.feedback:hover {
+  background-color: lightgray;
 }
