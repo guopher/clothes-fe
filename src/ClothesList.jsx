@@ -13,16 +13,21 @@ const REVERSE_NUM_WEARS = 'reverseNumWears'
 const COST_PER_WEAR = 'costPerWear'
 const REVERSE_COST_PER_WEAR = 'reverseCostPerWear'
 
-const ClothesList = (props) => {
+const ClothesList = ({ isLoggedIn, onAddWear, onUndoDelete }) => {
   const [clothes, setClothes] = useState([])
   const [error, setError] = useState(false)
-  const isLoggedIn = props.isLoggedIn
   const [filterValue, setFilterValue] = useState("")
   const [sort, setSort] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     if (isLoggedIn) {
+      setIsLoading(true)
       get_items()
+      // setIsLoading(false)
+    }
+    return () => {
+      setIsLoading(false)
     }
   }, [isLoggedIn])
 
@@ -137,8 +142,8 @@ const ClothesList = (props) => {
                   onUpdateNumWears={updateNumWears} 
                   onUpdateIsShow={updateIsShow} 
                   onUpdatePin={updatePin} 
-                  onUndoDelete={props.onUndoDelete}
-                  onAddWear={props.onAddWear}
+                  onUndoDelete={onUndoDelete}
+                  onAddWear={onAddWear}
                   />
     ))
 
@@ -165,8 +170,8 @@ const ClothesList = (props) => {
                   onUpdateNumWears={updateNumWears} 
                   onUpdateIsShow={updateIsShow} 
                   onUpdatePin={updatePin} 
-                  onUndoDelete={props.onUndoDelete}
-                  onAddWear={props.onAddWear}
+                  onUndoDelete={onUndoDelete}
+                  onAddWear={onAddWear}
                   />
     ))
     return pinned
@@ -206,17 +211,16 @@ const ClothesList = (props) => {
   const renderNoClothes = () => (
     <div>
       <img className={'img-closet'}src={require('./Closet.png')} alt={'Closet'}/>
-      <h6>Add some clothes to get started!</h6>
+      <h6>Add your favorite piece of clothing to get started!</h6>
     </div>
   )
 
 
   const renderClothesSection = () => {
     // TODO: fix why props.isLoading is always false here, when it should update based on parent state value
-    console.log(`props.isLoading: ${props.isLoading}`)
-    if (props.isLoading) {
-      return null
-    }
+    // if (isLoading) {
+    //   return null
+    // }
     return numTotalClothes > 0 ? renderClothesAvailable() : renderNoClothes()
   }
 

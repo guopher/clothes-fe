@@ -96,7 +96,7 @@ p {
 }
 
 .pin-icon {
-  text-align: end;
+  text-align: start;
   font-size: 20px;
   cursor: pointer;
   opacity: 0;

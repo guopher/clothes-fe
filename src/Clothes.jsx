@@ -67,10 +67,14 @@ const Clothes = (props) => {
   return (
     <div className ='clothes'>
       <div className='clothes-info'>
+        {/* <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div onClick={handlePin} className='pin-icon'>🗑️</div>
+          <div onClick={handlePin} className='pin-icon'>📌</div>
+        </div> */}
         <div onClick={handlePin} className='pin-icon'>📌</div>
         <div className='item-name'>{itemName}</div>
-        <p className='add-wears' onClick={updateNumWears}>Number of wears: {item.num_wears}</p>
         <p>Cost per wear: {costPerWear()}</p>
+        <p className='add-wears' onClick={updateNumWears}>Number of wears: {item.num_wears}</p>
         <p className='delete-item' onClick={updateIsShow} >Delete</p>
       </div>
     </div>

@@ -12,7 +12,7 @@ const TopBar = (props) => {
   const onSuccess = props.onSuccess
   const onError = props.onError
 
-  console.log(`TopBar isLoading: ${props.isLoading}`)
+  // console.log(`TopBar isLoading: ${props.isLoading}`)
 
   const giveFeedback = () => {
     window.open(FEEDBACK_FORM, '_blank')
@@ -24,7 +24,7 @@ const TopBar = (props) => {
 
   return (
     <div className='top-bar'>
-      <h1 className='title'>{JUICY_MANGO}</h1>
+      <div className='title'>{JUICY_MANGO}</div>
       {!isLoggedIn && <GoogleLogin onSuccess={onSuccess} onError={onError} />}
       {isLoggedIn && <h6 className='logout' onClick={onLogout}>Logout</h6>}
       <h6 className='feedback' onClick={giveFeedback} >Feedback?</h6>

@@ -23,8 +23,6 @@ const App = () => {
   const [name, setName] = useState(null)
   const [familyName, setFamilyName] = useState(null)
   const [picture, setPicture] = useState(null)
-  const [sub, setSub] = useState(null)
-  const [error, setError] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
 
@@ -41,11 +39,96 @@ const App = () => {
     theme: "dark"
   })
 
+  const fetchUser = async () => {
+    const url = `${BASE_URL}/api/get_user`
+
+    try {
+      const response = await fetch(url, {
+        method: GET,
+        headers: {
+          'Authorization': `Bearer ${getBearerToken()}`
+        }
+      })
+      const data = await response.json()
+
+      if (data.error && data.error == 'Signature has expired') {
+        setIsLoggedIn(false)
+        setIsLoading(false)
+        return
+      }
+
+      setFamilyName(data.familyName)
+      setGivenName(data.givenName)
+      setPicture(data.google_picture_url)
+      setIsLoggedIn(true)
+      setIsLoading(false)
+    } catch(error) {
+      console.log('error occured')
+      console.log(error)
+      if (error instanceof TypeError && error.message && error.message == 'Failed to fetch') {
+        console.log('server is down')
+        // TODO: this is a server error
+      } else {
+        console.log('something went wrong')
+      }
+      setIsLoggedIn(false)
+    }
+  }
+
   useEffect(() => {
     setIsLoading(true)
-    if (sub !== null) {
-      const url = `${BASE_URL}/api/login`
-      fetch(url, {
+    const token = getBearerToken()
+    if (token == null || token == undefined || token == 'undefined') {
+      setIsLoggedIn(false)
+      setIsLoading(false)
+      return
+    }
+
+    fetchUser()
+
+    return () => {
+      setIsLoading(false)
+    }
+  }, [])
+
+
+  const handleSubmit = (event) => {
+    // event.preventDefault()
+    if (itemName.length === 0 || companyName.length === 0 || itemName.length === 0) {
+      alert('please enter all fields')
+      return
+    } 
+
+    if (isNaN(priceBought)) {
+      alert('please enter a number for the price')
+      return
+    }
+
+    add_item(itemName, companyName, priceBought)
+    // TODO: do a front end update to display it after it's confirmed from the backend, just like updateNumWears
+
+      // TODO: this code is needed once we stop refreshing the whole items
+      // setItemName('')
+      // setCompanyName('')
+      // setPriceBought('')
+  }
+
+  const fetchGoogleUserInfo = async (response) => {
+    const credential = response.credential
+    const google_url = `${GET_GOOGLE_USER_INFO}${credential}`
+    const googleResponse = await fetch(google_url)
+    const data = await googleResponse.json()
+    setGivenName(data.given_name)
+    setFamilyName(data.family_name)
+    setPicture(data.picture)
+    setName(data.name)
+    return data.sub
+  }
+
+  const loginNewUser = async (sub) => {
+    const url = `${BASE_URL}/api/login`
+    try {
+      const response = await fetch(url, {
         method: POST,
         headers: {
           'Content-Type': json_format,
@@ -57,95 +140,24 @@ const App = () => {
           picture: picture,
         })
       })
-        .then(response => response.json())
-        .then(data => {
-          setIsLoading(false)
-          setError(false)
-          localStorage.setItem('jwtToken', data.token)
-          setIsLoggedIn(true)
-        })
-        .catch(error => {
-          setIsLoading(false)
-          setError(true)
-          console.log(error)
-          console.log(error.code)
-        })
-    }
-  }, [sub])
-
-
-  useEffect(() => {
-    setIsLoading(true)
-    const token = getBearerToken()
-    if (token !== null && token !== undefined && token !== 'undefined') {
+      const data = await response.json()
+      localStorage.setItem('jwtToken', data.token)
       setIsLoggedIn(true)
-      const url = `${BASE_URL}/api/get_user`
-      fetch(url, {
-        method: GET,
-        headers: {
-          'Authorization': `Bearer ${getBearerToken()}`
-        }
-      })
-        .then(response => response.json())
-        .then(data => {
-          setIsLoading(false)
-          if (data.error && data.error == 'Signature has expired') {
-            setIsLoggedIn(false);
-            return;
-          }
-          setFamilyName(data.familyName)
-          setGivenName(data.givenName)
-          setPicture(data.google_picture_url)
-        })
-        .catch(error => {
-          setIsLoading(false)
-          console.log('error occured')
-          console.log(error)
-          console.log(error.code)
-          if (error instanceof TypeError && error.message && error.message == 'Failed to fetch') {
-            console.log('server is down')
-            // TODO: this is a server error
-          } else {
-            console.log('something went wrong')
-          }
-        })
-    } else {
-      setIsLoading(false)
-      setIsLoggedIn(false)
-    }
-  }, [])
-
-
-  const handleSubmit = (event) => {
-    if (itemName.length === 0 || companyName.length === 0 || itemName.length === 0) {
-      alert('please enter all fields')
-    } else {
-      add_item(itemName, companyName, priceBought)
-      // TODO: this code is needed once we stop refreshing the whole items
-      // setItemName('')
-      // setCompanyName('')
-      // setPriceBought('')
+    } catch (error) {
+      console.log(error)
     }
   }
 
-  const onSuccess = (response) => {
-    const credential = response.credential
-    const google_url = `${GET_GOOGLE_USER_INFO}${credential}`
-    fetch(google_url)
-      .then(response => response.json())
-      .then(data => {
-        setGivenName(data.given_name)
-        setFamilyName(data.family_name)
-        setPicture(data.picture)
-        setName(data.name)
-        setSub(data.sub)
-      })
-      .catch(error => {
-        console.log(error)
-      })
+  const onSuccess = async (response) => {
+    try {
+      const sub = await fetchGoogleUserInfo(response)
+      loginNewUser(sub)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
-  const onLogout = () => {
+  const logout = () => {
     setIsLoading(false)
     const url = `${BASE_URL}/api/logout`
     const token = getBearerToken()
@@ -161,8 +173,6 @@ const App = () => {
         setIsLoading(false)
         localStorage.removeItem(jwtToken)
         setIsLoggedIn(false)
-        setSub(null)
-        console.log(`isLoading: ${isLoading}`)
       })
       .catch(error => {
         setIsLoading(false)
@@ -174,7 +184,7 @@ const App = () => {
     <>
       <ToastContainer autoClose={5000} />
       <TopBar 
-        onLogout={onLogout}
+        onLogout={logout}
         isLoggedIn={isLoggedIn}
         givenName={givenName}
         familyName={familyName}
@@ -197,10 +207,8 @@ const App = () => {
           <h3>Closet</h3>
           <div>
             <ClothesList 
-              isLoading={isLoading} 
               onAddWear={addWearToast} 
               onUndoDelete={undoDelete} 
-              error={() => console.log(error)} 
               isLoggedIn={isLoggedIn} 
             />
           </div>
@@ -219,11 +227,8 @@ const App = () => {
     )
   }
 
-  console.log(`render isLoading: ${isLoading}`)
   if (isLoading) {
-    return (
-      <div>Loading...</div>
-    )
+    return null
   }
 
   return (
@@ -231,7 +236,7 @@ const App = () => {
       <header className="App-header">
       </header>
        <body>
-          {isLoggedIn ? loggedInElement() : loggedOutElement()}
+          {isLoggedIn && !isLoading ? loggedInElement() : loggedOutElement()}
        </body>
     </div>
   );
