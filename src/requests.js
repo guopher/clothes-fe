@@ -1,7 +1,8 @@
 import { POST, json_format } from './constants';
 import { getBearerToken } from './utilities';
 
-export const BASE_URL = 'http://127.0.0.1:5000'
+// export const BASE_URL = 'http://127.0.0.1:5000'
+export const BASE_URL = 'https://agile-earth-32141.herokuapp.com'
 
 export const add_wears = (item_id, num_wears) => {
   const url = `${BASE_URL}/api/add_wears`;

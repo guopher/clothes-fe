@@ -24,12 +24,16 @@ const TopBar = (props) => {
 
   return (
     <div className='top-bar'>
-      <div className='title'>{JUICY_MANGO}</div>
-      {!isLoggedIn && <GoogleLogin onSuccess={onSuccess} onError={onError} />}
-      {isLoggedIn && <h6 className='logout' onClick={onLogout}>Logout</h6>}
-      <h6 className='feedback' onClick={giveFeedback} >Feedback?</h6>
-      <h6 className='btn-bug' onClick={submitBug} >Bug?</h6>
-      {isLoggedIn && picture ? <img className='profile-pic' src={picture} referrerPolicy='no-referrer' /> : null}
+      <div style={{ display: 'flex'}}>
+        <div className='title'>{JUICY_MANGO}</div>
+      </div>
+      <div style={{ display: 'flex'}}>
+        {!isLoggedIn && <GoogleLogin onSuccess={onSuccess} onError={onError} />}
+        {isLoggedIn && <h6 className='logout' onClick={onLogout}>Logout</h6>}
+        <h6 className='feedback' onClick={giveFeedback} >Feedback?</h6>
+        <h6 className='btn-bug' onClick={submitBug} >Bug?</h6>
+        {isLoggedIn && picture ? <img className='profile-pic' src={picture} referrerPolicy='no-referrer' /> : null}
+      </div>
     </div>
   )
 }
