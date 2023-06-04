@@ -122,10 +122,15 @@ const App = () => {
     setFamilyName(data.family_name)
     setPicture(data.picture)
     setName(data.name)
-    return data.sub
+    return {
+      sub: data.sub,
+      givenName: data.given_name,
+      familyName: data.family_name,
+      picture: data.picture
+    }
   }
 
-  const loginNewUser = async (sub) => {
+  const loginNewUser = async (userInfo) => {
     const url = `${BASE_URL}/api/login`
     try {
       const response = await fetch(url, {
@@ -134,10 +139,10 @@ const App = () => {
           'Content-Type': json_format,
         },
         body: JSON.stringify({
-          sub: sub,
-          givenName: givenName,
-          familyName: familyName,
-          picture: picture,
+          sub: userInfo.sub,
+          givenName: userInfo.givenName,
+          familyName: userInfo.familyName,
+          picture: userInfo.picture,
         })
       })
       const data = await response.json()
@@ -150,8 +155,8 @@ const App = () => {
 
   const onSuccess = async (response) => {
     try {
-      const sub = await fetchGoogleUserInfo(response)
-      loginNewUser(sub)
+      const userInfo = await fetchGoogleUserInfo(response)
+      loginNewUser(userInfo)
     } catch (error) {
       console.log(error)
     }
