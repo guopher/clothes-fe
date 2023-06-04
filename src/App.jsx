@@ -13,7 +13,6 @@ import { JUICY_MANGO, JUICY_MANGO_SUBHEADING } from './strings';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Undo from './Undo';
-import { gitShortHash } from 'git-rev-sync'
 
 const App = () => {
   const [companyName, setCompanyName] = useState("")
@@ -218,15 +217,12 @@ const App = () => {
     </>
   ) 
 
-  const commitId = gitShortHash()
-
   const loggedOutElement = () => {
     return (
       <div className='logged-out-container'>
         <h1>{JUICY_MANGO}</h1>
         <h5>{JUICY_MANGO_SUBHEADING}</h5>
         <GoogleLogin onSuccess={onSuccess} onError={(error) => console.log(error)} />
-        <p>{`Commit ID: ${commitId}`}</p>
       </div>
     )
   }
