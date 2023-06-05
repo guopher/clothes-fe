@@ -24,6 +24,7 @@ const App = () => {
   const [familyName, setFamilyName] = useState(null)
   const [picture, setPicture] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [clothes, setClothes] = useState([])
 
   const undoComponent = (itemName, onClickConfirm) => (
     <Undo msg={`${itemName} deleted`} 
@@ -37,6 +38,85 @@ const App = () => {
   const addWearToast = (message) => toast.success(message, {
     theme: "dark"
   })
+
+  const updateAdd = (newItem) => {
+    console.log('ran_update_add')
+    setClothes(prevClothes => {
+      const newClothes = [...prevClothes]
+      newClothes.unshift(newItem)
+      return newClothes
+    })
+  }
+
+  // TODO: is there a way to consolidate updateNumWears and updateIsShow
+  const updateNumWears = (item_id, updatedNumWears) => {
+    setClothes(prevClothes => {
+      const updatedClothes = [...prevClothes];
+      const clothingIndex = updatedClothes.findIndex(c => c._id === item_id);
+      updatedClothes[clothingIndex] = {
+        ...updatedClothes[clothingIndex],
+        num_wears: updatedNumWears,
+      };
+      return updatedClothes;
+    });
+  }
+
+  const updateIsShow = (item_id, updatedIsShow) => {
+    setClothes(prevClothes => {
+      const updatedClothes = [...prevClothes];
+      const clothingIndex = updatedClothes.findIndex(c => c._id === item_id);
+      // TODO: remove bug where if you delete clothing item, it doesn't actually remove the clothing item. only sets to false
+      updatedClothes[clothingIndex] = {
+        ...updatedClothes[clothingIndex],
+        is_show: updatedIsShow,
+      };
+      return updatedClothes;
+    });
+  }
+
+  const updateIsPin = (item_id, updatedPin) => {
+    setClothes(prevClothes => {
+      const updatedClothes = [...prevClothes];
+      const clothingIndex = updatedClothes.findIndex(c => c._id === item_id);
+      updatedClothes[clothingIndex] = {
+        ...updatedClothes[clothingIndex],
+        is_pinned: updatedPin,
+      };
+      return updatedClothes;
+    });
+  }
+
+  const get_items = () => {
+    if (isLoggedIn) {
+      const url = `${BASE_URL}/api/get_items`
+      fetch(url, {
+        method: POST,
+        headers: {
+          'Content-Type': json_format,
+          'Authorization': `Bearer ${getBearerToken()}`
+        },
+      })
+        .then(response => {
+          if (response.status === 403) {
+            console.log('user forbidden')
+            return
+          }
+          // setError(false)
+          return response.json()
+        })
+        .then(data => {
+          // setError(false)
+          setClothes(data)
+        })
+        .catch(error => {
+          console.log(error)
+          if (error instanceof TypeError && error.message && error.message === 'Failed to fetch') {
+            // TODO: incorporate custom error messages to user?
+            // setError(true)
+          }
+        })
+    }
+  }
 
   const fetchUser = async () => {
     const url = `${BASE_URL}/api/get_user`
@@ -91,8 +171,31 @@ const App = () => {
   }, [])
 
 
+  const addItem = async (itemName, companyName, priceBought) => {
+    const item = await add_item(itemName, companyName, priceBought)
+    if (item) {
+      const serializedItem = {
+        '_id': item._id,
+        'item_name': item.item_name,
+        'price_bought': item.price_bought,
+        'company': item.company,
+        'is_show': item.is_show
+      }
+      updateAdd(serializedItem)
+    } else {
+      console.log('item was not added')
+    }
+    // TODO: do a front end update to display it after it's confirmed from the backend, just like updateNumWears
+
+      // TODO: this code is needed once we stop refreshing the whole items
+    setItemName('')
+    setCompanyName('')
+    setPriceBought('')
+    
+  }
+
   const handleSubmit = (event) => {
-    // event.preventDefault()
+    event.preventDefault()
     if (itemName.length === 0 || companyName.length === 0 || itemName.length === 0) {
       alert('please enter all fields')
       return
@@ -103,13 +206,7 @@ const App = () => {
       return
     }
 
-    add_item(itemName, companyName, priceBought)
-    // TODO: do a front end update to display it after it's confirmed from the backend, just like updateNumWears
-
-      // TODO: this code is needed once we stop refreshing the whole items
-      // setItemName('')
-      // setCompanyName('')
-      // setPriceBought('')
+    addItem(itemName, companyName, priceBought)
   }
 
   const fetchGoogleUserInfo = async (response) => {
@@ -214,6 +311,11 @@ const App = () => {
               onAddWear={addWearToast} 
               onUndoDelete={undoDelete} 
               isLoggedIn={isLoggedIn} 
+              clothes={clothes}
+              get_items={get_items}
+              updateNumWears={updateNumWears}
+              updateIsShow={updateIsShow}
+              updateIsPin={updateIsPin}
             />
           </div>
         </div>

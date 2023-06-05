@@ -13,8 +13,7 @@ const REVERSE_NUM_WEARS = 'reverseNumWears'
 const COST_PER_WEAR = 'costPerWear'
 const REVERSE_COST_PER_WEAR = 'reverseCostPerWear'
 
-const ClothesList = ({ isLoggedIn, onAddWear, onUndoDelete }) => {
-  const [clothes, setClothes] = useState([])
+const ClothesList = ({ isLoggedIn, onAddWear, onUndoDelete, clothes, get_items, updateNumWears, updateIsShow, updateIsPin }) => {
   const [error, setError] = useState(false)
   const [filterValue, setFilterValue] = useState("")
   const [sort, setSort] = useState("")
@@ -30,76 +29,6 @@ const ClothesList = ({ isLoggedIn, onAddWear, onUndoDelete }) => {
       setIsLoading(false)
     }
   }, [isLoggedIn])
-
-  const get_items = () => {
-    if (isLoggedIn) {
-      const url = `${BASE_URL}/api/get_items`
-      fetch(url, {
-        method: POST,
-        headers: {
-          'Content-Type': json_format,
-          'Authorization': `Bearer ${getBearerToken()}`
-        },
-      })
-        .then(response => {
-          if (response.status === 403) {
-            console.log('user forbidden')
-            return
-          }
-          // setError(false)
-          return response.json()
-        })
-        .then(data => {
-          setError(false)
-          setClothes(data)
-        })
-        .catch(error => {
-          console.log(error)
-          if (error instanceof TypeError && error.message && error.message === 'Failed to fetch') {
-            // TODO: incorporate custom error messages to user?
-            setError(true)
-          }
-        })
-    }
-  }
-
-  // TODO: is there a way to consolidate updateNumWears and updateIsShow
-  const updateNumWears = (item_id, updatedNumWears) => {
-    setClothes(prevClothes => {
-      const updatedClothes = [...prevClothes];
-      const clothingIndex = updatedClothes.findIndex(c => c._id === item_id);
-      updatedClothes[clothingIndex] = {
-        ...updatedClothes[clothingIndex],
-        num_wears: updatedNumWears,
-      };
-      return updatedClothes;
-    });
-  }
-
-  const updateIsShow = (item_id, updatedIsShow) => {
-    setClothes(prevClothes => {
-      const updatedClothes = [...prevClothes];
-      const clothingIndex = updatedClothes.findIndex(c => c._id === item_id);
-      // TODO: remove bug where if you delete clothing item, it doesn't actually remove the clothing item. only sets to false
-      updatedClothes[clothingIndex] = {
-        ...updatedClothes[clothingIndex],
-        is_show: updatedIsShow,
-      };
-      return updatedClothes;
-    });
-  }
-
-  const updatePin = (item_id, updatedPin) => {
-    setClothes(prevClothes => {
-      const updatedClothes = [...prevClothes];
-      const clothingIndex = updatedClothes.findIndex(c => c._id === item_id);
-      updatedClothes[clothingIndex] = {
-        ...updatedClothes[clothingIndex],
-        is_pinned: updatedPin,
-      };
-      return updatedClothes;
-    });
-  }
 
   const showClothes = (item) => {
     if (filterValue === "") {
@@ -130,7 +59,6 @@ const ClothesList = ({ isLoggedIn, onAddWear, onUndoDelete }) => {
     }
   }
 
-
   const clothesList = () => {
     if (error) {
       return <h5>Server is having some issues 😢</h5>
@@ -141,7 +69,7 @@ const ClothesList = ({ isLoggedIn, onAddWear, onUndoDelete }) => {
                   clothes={item} 
                   onUpdateNumWears={updateNumWears} 
                   onUpdateIsShow={updateIsShow} 
-                  onUpdatePin={updatePin} 
+                  onUpdatePin={updateIsPin} 
                   onUndoDelete={onUndoDelete}
                   onAddWear={onAddWear}
                   />
@@ -169,7 +97,7 @@ const ClothesList = ({ isLoggedIn, onAddWear, onUndoDelete }) => {
                   clothes={item} 
                   onUpdateNumWears={updateNumWears} 
                   onUpdateIsShow={updateIsShow} 
-                  onUpdatePin={updatePin} 
+                  onUpdatePin={updateIsPin} 
                   onUndoDelete={onUndoDelete}
                   onAddWear={onAddWear}
                   />

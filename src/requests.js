@@ -23,8 +23,6 @@ export const add_wears = (item_id, num_wears) => {
 
 export const pin_item = (item_id, isPinned) => {
   const url = `${BASE_URL}/api/pin_item`
-  const bearer = getBearerToken()
-  console.log(`bearer: ${bearer}}`)
   fetch(url, {
     method: POST,
     headers: {
@@ -59,11 +57,9 @@ export const delete_item = (item_id, is_show) => {
     })
 }
 
-export const add_item = (itemName, companyName, priceBought) => {
+export const add_item = async (itemName, companyName, priceBought) => {
   const url = `${BASE_URL}/api/add_item`
-  const bearer = getBearerToken()
-  console.log(`bearer: ${bearer}}`)
-  fetch(url, {
+  const response = await fetch(url, {
     method: POST,
     headers: {
       'Content-Type': json_format,
@@ -75,8 +71,7 @@ export const add_item = (itemName, companyName, priceBought) => {
         company: companyName,
     })
   })
-    .catch(error => {
-      console.log(error)
-    })
+  const data = await response.json()
+  return data
 }
 

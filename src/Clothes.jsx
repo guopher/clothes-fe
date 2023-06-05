@@ -26,7 +26,7 @@ const Clothes = (props) => {
 
   const item = props.clothes
   const costPerWear = () => {
-    if (item.num_wears === 0) {
+    if (!item.hasOwnProperty('num_wears') || item.num_wears === 0) {
       return 'Wear this soon!'
     }
     const pricePerWear = (item.price_bought / item.num_wears).toFixed(2)
