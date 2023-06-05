@@ -40,7 +40,6 @@ const App = () => {
   })
 
   const updateAdd = (newItem) => {
-    console.log('ran_update_add')
     setClothes(prevClothes => {
       const newClothes = [...prevClothes]
       newClothes.unshift(newItem)

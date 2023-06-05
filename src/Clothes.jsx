@@ -29,12 +29,12 @@ const Clothes = (props) => {
     if (!item.hasOwnProperty('num_wears') || item.num_wears === 0) {
       return 'Wear this soon!'
     }
-    const pricePerWear = (item.price_bought / item.num_wears).toFixed(2)
+    const pricePerWear = (item.price_bought / item.num_wears)
     const localeString = pricePerWear.toLocaleString('en-US', {
       style: 'currency',
       currency: 'USD'
     })
-    return `$${pricePerWear}`
+    return `${localeString}`
   }
 
   const updateIsShow = () => {
