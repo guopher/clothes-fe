@@ -25,7 +25,6 @@ const App = () => {
   const [picture, setPicture] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
-
   const undoComponent = (itemName, onClickConfirm) => (
     <Undo msg={`${itemName} deleted`} 
           onUndo={onClickConfirm ? onClickConfirm : () => console.log('notification clicked')} />
