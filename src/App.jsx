@@ -314,7 +314,7 @@ const App = () => {
 
   const loggedInElement = () => (
     <div style={{ marginTop: '20px', marginBottom: '20px' }}>
-      <ToastContainer autoClose={5000} />
+      <ToastContainer autoClose={5000} limit={3} />
       <TopBar 
         onLogout={logout}
         isLoggedIn={isLoggedIn}
