@@ -14,7 +14,7 @@ const ErrorComponent = () => {
             Uh Oh 😢
             <br></br>
             <div style={{ fontSize: '20px', marginTop: '10px'}}>
-              Something wrong went on our end
+              Something wrong went on our end, or we're undergoing maintenance
             </div>
           </div>
         </div>

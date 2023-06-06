@@ -128,7 +128,7 @@ const App = () => {
   const fetchUser = async () => {
     const url = `${BASE_URL}/api/get_user`
 
-    const timeoutDuration = 2000; // 5 seconds
+    const timeoutDuration = 1000; // 5 seconds
 
     // Start the timer
     const timeoutId = setTimeout(() => {
@@ -245,6 +245,15 @@ const App = () => {
 
   const loginNewUser = async (userInfo) => {
     const url = `${BASE_URL}/api/login`
+    const timeoutDuration = 2000; // 5 seconds
+
+    // Start the timer
+    const timeoutId = setTimeout(() => {
+      // Timeout logic
+      setIsLoading(false);
+      setError(true);
+    }, timeoutDuration);
+
     try {
       const response = await fetch(url, {
         method: POST,
@@ -259,6 +268,7 @@ const App = () => {
         })
       })
       const data = await response.json()
+      clearTimeout(timeoutId)
       localStorage.setItem('jwtToken', data.token)
       setIsLoggedIn(true)
     } catch (error) {
