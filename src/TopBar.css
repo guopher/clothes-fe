@@ -17,6 +17,7 @@
   margin-right: 75px;
   font-size: 32px;
   font-weight: bold;
+  cursor: pointer;
 }
 
 @media (max-width: 1400px) {
@@ -51,40 +52,51 @@
 }
 
 .logout {
-  background-color: gray;
+  /* background-color: gray; */
   padding: 10px;
   margin-right: 10px;
-  margin-left: 10px;
+  /* margin-left: 5px; */
   border-radius: 15px;
   cursor: pointer;
 }
 
 .logout:hover {
-  background-color: lightgray;
+  /* color: orange; */
+  color: #ff9e7a;
 }
 
 .feedback {
-  background-color: gray;
+  /* background-color: gray; */
   padding: 10px;
-  margin-right: 10px;
-  margin-left: 10px;
-  border-radius: 15px;
-  cursor: pointer;
-}
-
-.btn-bug {
-  background-color: gray;
-  padding: 10px;
-  margin-right: 25px;
-  margin-left: 10px;
+  margin-left: 5px;
+  /* margin-right: 5px; */
   border-radius: 15px;
   cursor: pointer;
 }
 
 .feedback:hover {
-  background-color: lightgray;
+  /* color: orange; */
+  color: #ff9e7a;
+}
+
+.btn-bug {
+  /* background-color: gray; */
+  padding: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-radius: 15px;
+  cursor: pointer;
 }
 
 .btn-bug:hover {
- background-color: lightgray;
+  /* color: orange; */
+  color: #ff9e7a;
+}
+
+.feedback:hover {
+  /* background-color: lightgray; */
+}
+
+.btn-bug:hover {
+ /* background-color: lightgray; */
 }

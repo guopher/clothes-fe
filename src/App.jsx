@@ -178,15 +178,13 @@ const App = () => {
         'item_name': item.item_name,
         'price_bought': item.price_bought,
         'company': item.company,
-        'is_show': item.is_show
+        'is_show': item.is_show,
+        'num_wears': 0,
       }
       updateAdd(serializedItem)
     } else {
       console.log('item was not added')
     }
-    // TODO: do a front end update to display it after it's confirmed from the backend, just like updateNumWears
-
-      // TODO: this code is needed once we stop refreshing the whole items
     setItemName('')
     setCompanyName('')
     setPriceBought('')
@@ -280,8 +278,12 @@ const App = () => {
       })
   }
 
+  // TODO: fix this once the number actually updates on deletion. Currently updating on add for some reason
+  // const closetTitle = clothes.length > 0 ? `Closet (${clothes.length})` : 'Closet'
+  const closetTitle = 'Closet'
+
   const loggedInElement = () => (
-    <>
+    <div style={{ marginTop: '20px', marginBottom: '20px' }}>
       <ToastContainer autoClose={5000} />
       <TopBar 
         onLogout={logout}
@@ -304,7 +306,7 @@ const App = () => {
           onSetPriceBought={setPriceBought}
           />
         <div className='clothes-container'>
-          <h3>Closet</h3>
+          <div className='section-header'>Closet</div>
           <div>
             <ClothesList 
               onAddWear={addWearToast} 
@@ -319,7 +321,7 @@ const App = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   ) 
 
   const loggedOutElement = () => {

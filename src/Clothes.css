@@ -29,7 +29,7 @@
 .clothes {
   margin: 10px;
   border: 1px solid #535C6D;
-  border-radius: 15px;
+  border-radius: 11px;
   flex-wrap: wrap;
   width: 250px;
 }
@@ -58,10 +58,12 @@
   background-color: cornflowerblue;
   margin-left: 20px;
   margin-right: 20px;
-  border-radius: 15px;
+  border-radius: 10px;
   padding: 3px;
   padding-top: 5px;
   padding-bottom: 5px;
+  font-size: 18px;
+  margin-bottom: 10px;
 }
 
 .delete-item:hover {
@@ -111,10 +113,80 @@ p {
 .item-name {
   font-size: 16px;
   font-weight: bold;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .img-closet {
   margin-top: 100px;
   height: auto;
   width: 200px;
+}
+
+.increment-wears-container {
+  display: flex;
+  padding-left: 10px;
+  flex-basis: 50%;
+  margin-top: 20px;
+}
+
+.increment-wears-btn-container {
+  display: flex;
+  flex-basis: 50%;
+  justify-content: flex-end;
+  padding-right: 10px;
+}
+
+.number-of-wears-text {
+  flex-basis: 50%;
+  font-size: 18px;
+  /* align-self: center; */
+  text-align: left;
+}
+
+.increment-wears-label {
+  font-size: 18px;
+  text-align: left;
+}
+
+.increment-wears-btn {
+  border: 1px solid;
+  font-size: 18px;
+  font-weight: bold;
+  margin-left: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  align-self: center;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: darkgreen;
+}
+
+.increment-wears-btn:hover {
+  background-color: #008400;
+}
+
+.cost-per-wear-container {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.cost-per-wear-label {
+  text-align: left;
+  font-size: 18px;
+}
+
+.cost-per-wear-amount {
+  font-size: 18px;
+  padding-right: 10px;
+  /* color: #ff9e7a;
+  font-weight: bold; */
+}
+
+.cost-per-wear-amount-zero {
+  color: #ff9e7a;
+  font-weight: bold;
 }
