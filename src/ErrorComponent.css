@@ -1,0 +1,69 @@
+.error-component {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+}
+
+.error-img {
+  height: auto;
+  width: 400px;
+  margin-right: 50px;
+}
+
+@media(max-width: 750px) {
+  .error-img {
+    width: 250px;
+  }
+}
+
+@media(max-width: 500px) {
+  .error-img {
+    display: none;
+  }
+}
+
+.error-msg {
+  font-size: 32px;
+}
+
+.error-description {
+  font-size: 20px;
+}
+
+.error-action-item {
+  flex-basis: 33%;
+  width: 90%;
+  margin-top: 100px;
+  text-align: center;
+  font-size: 22px;
+}
+
+a:link {
+  color: orange;
+  background-color: transparent;
+  text-decoration: none;
+}
+a:visited {
+  color: lightpink;
+  background-color: transparent;
+  text-decoration: none;
+}
+a:hover {
+  color: red;
+  background-color: transparent;
+  text-decoration: underline;
+}
+a:active {
+  color: yellow;
+  background-color: transparent;
+  text-decoration: underline;
+}

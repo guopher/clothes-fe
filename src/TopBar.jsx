@@ -22,10 +22,18 @@ const TopBar = (props) => {
     window.open(BUG_FORM, '_blank')
   }
 
+  const onTitleClick = () => {
+    alert('sorry, this button will have functionality coming soon! 😊')
+  }
+
   return (
     <div className='top-bar'>
-      <div style={{ display: 'flex'}}>
-        <div className='title' onClick={() => alert('sorry, this button will have functionality coming soon! 😊')}>{JUICY_MANGO}</div>
+      {/* <div style={{ display: 'flex'}}>
+        <div className='title' onClick={}>{JUICY_MANGO}</div>
+      </div> */}
+      <div className='mango-logo-topbar-container '>
+        <img className='mango-logo' src={require('./img/mango.png')} alt='mango-logo' />
+        <div className='title'>{JUICY_MANGO}</div>
       </div>
       <div style={{ display: 'flex'}}>
         {!isLoggedIn && <GoogleLogin onSuccess={onSuccess} onError={onError} />}

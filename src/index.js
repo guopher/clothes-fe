@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { BASE_URL } from './requests';
+import ErrorComponent from './ErrorComponent';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -18,13 +19,14 @@ fetch(url).then(response => response.json()).then(data => {
     </GoogleOAuthProvider>
   );
 }).catch(() => {
-  root.render(
-    <GoogleOAuthProvider clientId={''} >
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    </GoogleOAuthProvider>
-  );
+  root.render(<ErrorComponent />)
+  // root.render(
+  //   <GoogleOAuthProvider clientId={''} >
+  //     <React.StrictMode>
+  //       <App />
+  //     </React.StrictMode>
+  //   </GoogleOAuthProvider>
+  // );
 })
 
 // If you want to start measuring performance in your app, pass a function

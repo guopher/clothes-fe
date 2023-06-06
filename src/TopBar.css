@@ -12,13 +12,6 @@
   margin-right: 10px;
 }
 
-.title {
-  margin-left: 30px;
-  margin-right: 75px;
-  font-size: 32px;
-  font-weight: bold;
-  cursor: pointer;
-}
 
 @media (max-width: 1400px) {
   .title {
@@ -52,7 +45,6 @@
 }
 
 .logout {
-  /* background-color: gray; */
   padding: 10px;
   margin-right: 10px;
   /* margin-left: 5px; */
@@ -66,7 +58,6 @@
 }
 
 .feedback {
-  /* background-color: gray; */
   padding: 10px;
   margin-left: 5px;
   /* margin-right: 5px; */
@@ -80,7 +71,6 @@
 }
 
 .btn-bug {
-  /* background-color: gray; */
   padding: 10px;
   margin-left: 5px;
   margin-right: 5px;
@@ -93,10 +83,15 @@
   color: #ff9e7a;
 }
 
-.feedback:hover {
-  /* background-color: lightgray; */
+.mango-logo-topbar-container {
+  display: flex;
+  margin-left: 20px;
 }
 
-.btn-bug:hover {
- /* background-color: lightgray; */
+.title {
+  font-size: 32px;
+  cursor: pointer;
+  font-weight: bold;
+  align-self: center;
+  cursor: pointer;
 }

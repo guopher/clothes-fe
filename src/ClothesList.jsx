@@ -138,7 +138,7 @@ const ClothesList = ({ isLoggedIn, onAddWear, onUndoDelete, clothes, get_items, 
 
   const renderNoClothes = () => (
     <div>
-      <img className={'img-closet'}src={require('./Closet.png')} alt={'Closet'}/>
+      <img className={'img-closet'}src={require('./img/closet.png')} alt={'Closet'}/>
       <h6>Add your favorite piece of clothing to get started!</h6>
     </div>
   )

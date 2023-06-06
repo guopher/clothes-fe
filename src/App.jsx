@@ -13,6 +13,7 @@ import { JUICY_MANGO, JUICY_MANGO_SUBHEADING } from './strings';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Undo from './Undo';
+import ErrorComponent from './ErrorComponent';
 
 const App = () => {
   const [companyName, setCompanyName] = useState("")
@@ -25,6 +26,9 @@ const App = () => {
   const [picture, setPicture] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [clothes, setClothes] = useState([])
+  const [error, setError] = useState(null)
+
+  console.log(`error: ${error}`)
 
   const undoComponent = (itemName, onClickConfirm) => (
     <Undo msg={`${itemName} deleted`} 
@@ -38,6 +42,12 @@ const App = () => {
   const addWearToast = (message) => toast.success(message, {
     theme: "dark"
   })
+
+  useEffect(() => {
+    if (error) {
+      console.log(`error changed: ${error}`)
+    }
+  }, [error])
 
   const updateAdd = (newItem) => {
     setClothes(prevClothes => {
@@ -96,11 +106,11 @@ const App = () => {
         },
       })
         .then(response => {
+          // setError(false)
           if (response.status === 403) {
             console.log('user forbidden')
             return
           }
-          // setError(false)
           return response.json()
         })
         .then(data => {
@@ -111,7 +121,7 @@ const App = () => {
           console.log(error)
           if (error instanceof TypeError && error.message && error.message === 'Failed to fetch') {
             // TODO: incorporate custom error messages to user?
-            // setError(true)
+            setError(true)
           }
         })
     }
@@ -119,6 +129,15 @@ const App = () => {
 
   const fetchUser = async () => {
     const url = `${BASE_URL}/api/get_user`
+
+    const timeoutDuration = 2000; // 5 seconds
+
+    // Start the timer
+    const timeoutId = setTimeout(() => {
+      // Timeout logic
+      setIsLoading(false);
+      setError(true);
+    }, timeoutDuration);
 
     try {
       const response = await fetch(url, {
@@ -128,6 +147,7 @@ const App = () => {
         }
       })
       const data = await response.json()
+      clearTimeout(timeoutId)
 
       if (data.error && data.error == 'Signature has expired') {
         setIsLoggedIn(false)
@@ -140,16 +160,18 @@ const App = () => {
       setPicture(data.google_picture_url)
       setIsLoggedIn(true)
       setIsLoading(false)
-    } catch(error) {
+    } catch(err) {
       console.log('error occured')
-      console.log(error)
-      if (error instanceof TypeError && error.message && error.message == 'Failed to fetch') {
+      console.log(err)
+      setError(true)
+      if (err instanceof TypeError && err.message && err.message == 'Failed to fetch') {
         console.log('server is down')
         // TODO: this is a server error
       } else {
         console.log('something went wrong')
       }
       setIsLoggedIn(false)
+      console.log(error)
     }
   }
 
@@ -242,6 +264,7 @@ const App = () => {
       localStorage.setItem('jwtToken', data.token)
       setIsLoggedIn(true)
     } catch (error) {
+      setError(true)
       console.log(error)
     }
   }
@@ -253,6 +276,13 @@ const App = () => {
     } catch (error) {
       console.log(error)
     }
+  }
+
+  const onError = (error) => {
+    if (error) {
+      console.log(error)
+    }
+    setError(true)
   }
 
   const logout = () => {
@@ -327,15 +357,22 @@ const App = () => {
   const loggedOutElement = () => {
     return (
       <div className='logged-out-container'>
-        <h1>{JUICY_MANGO}</h1>
-        <h5>{JUICY_MANGO_SUBHEADING}</h5>
-        <GoogleLogin onSuccess={onSuccess} onError={(error) => console.log(error)} />
+        <div className='mango-logo-container'>
+          <img className='mango-logo' src={require('./img/mango.png')} alt='mango-logo' />
+          <div className='logout-title'>{JUICY_MANGO}</div>
+        </div>
+        <div className='logout-subtitle'>{JUICY_MANGO_SUBHEADING}</div>
+        <GoogleLogin onSuccess={onSuccess} onError={onError} />
       </div>
     )
   }
 
   if (isLoading) {
-    return null
+    return <h1>Loading... (new animation coming soon)</h1>
+  }
+
+  if (error) {
+    return <ErrorComponent />
   }
 
   return (
@@ -343,7 +380,8 @@ const App = () => {
       <header className="App-header">
       </header>
        <body>
-          {isLoggedIn && !isLoading ? loggedInElement() : loggedOutElement()}
+          {/* {error ? <ErrorComponent /> : null} */}
+          {isLoggedIn && !isLoading && !error ? loggedInElement() : loggedOutElement()}
        </body>
     </div>
   );

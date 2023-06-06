@@ -16,7 +16,7 @@ const AddItem = (props) => {
 
   return (
     <div className='add-item-container'>
-      <div className='section-header'>Add Clothing Item</div>
+      <div className='add-clothing-section-header '>Add Clothing Item</div>
       <div className='add-item-view'>
         <form className='add-item-form' onSubmit={handleSubmit}>
           <div className='form-group'>
