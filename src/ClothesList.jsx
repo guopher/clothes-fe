@@ -156,7 +156,6 @@ const ClothesList = ({ isLoggedIn, onAddWear, onUndoDelete, clothes, get_items, 
 
   const onFilterUnworn = () => {
     setFilterUnworn(!isFilterUnworn)
-    console.log(isFilterUnworn)
   }
 
   const filterStickerClass = isFilterUnworn ? 'filter-unworn-on' : 'filter-unworn-off'
