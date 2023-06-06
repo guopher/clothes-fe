@@ -18,6 +18,7 @@ const ClothesList = ({ isLoggedIn, onAddWear, onUndoDelete, clothes, get_items, 
   const [filterValue, setFilterValue] = useState("")
   const [sort, setSort] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [isFilterUnworn, setFilterUnworn] = useState(false)
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -76,16 +77,24 @@ const ClothesList = ({ isLoggedIn, onAddWear, onUndoDelete, clothes, get_items, 
     ))
 
     if (displayedList.length === 0 && filterValue.length > 0) {
-      return <h5>Filter too strong 😪</h5>
+      return <h5>Filter too strong</h5>
     }
 
     return displayedList
+  }
+
+  const filterUnworn = (item) => {
+    if (isFilterUnworn) {
+      return item.num_wears === 0
+    }
+    return true
   }
 
   const getFilteredList = () => {
     if (clothes) {
       return clothes
               .filter(showClothes)
+              .filter(filterUnworn)
               .sort(getSortFn())
     }
     return []
@@ -120,9 +129,6 @@ const ClothesList = ({ isLoggedIn, onAddWear, onUndoDelete, clothes, get_items, 
     }
   }
 
-  const numTotalClothes = getFilteredList().filter(item => !item.is_pinned).length + 
-                          getFilteredList().filter(item => item.is_pinned).length
-
   const renderClothesAvailable = () => (
     <>
       <div className='section-title'>Pinned</div>
@@ -145,29 +151,37 @@ const ClothesList = ({ isLoggedIn, onAddWear, onUndoDelete, clothes, get_items, 
 
 
   const renderClothesSection = () => {
-    // TODO: fix why props.isLoading is always false here, when it should update based on parent state value
-    // if (isLoading) {
-    //   return null
-    // }
-    return numTotalClothes > 0 ? renderClothesAvailable() : renderNoClothes()
+    return getFilteredList().length === 0  && filterValue === '' && !isFilterUnworn ? renderNoClothes() : renderClothesAvailable()
   }
+
+  const onFilterUnworn = () => {
+    setFilterUnworn(!isFilterUnworn)
+    console.log(isFilterUnworn)
+  }
+
+  const filterStickerClass = isFilterUnworn ? 'filter-unworn-on' : 'filter-unworn-off'
 
   return (
     <div>
       <div className='filter-items-container'>
-        <div> 
-          <input className='filter-box' type="text" placeholder='Filter' onChange={filterOnChange}/>
+        <div>
+          <div> 
+            <input className='filter-box' type="text" placeholder='Filter' onChange={filterOnChange}/>
+          </div>
         </div>
-        <select onChange={handleChange}>
-          <option value="">Select sort</option>
-          {/* TODO: make this use arrows for up and down so there's less options to pick */}
-          <option value={ALPHABETICAL}>A to Z</option>
-          <option value={REVERSE_ALPHABETICAL}>Z to A</option>
-          <option value={NUM_WEARS}>Highest number of wears to lowest</option>
-          <option value={REVERSE_NUM_WEARS}>Lowest number of wears to highest</option>
-          <option value={COST_PER_WEAR}>Highest cost per wear to lowest</option>
-          <option value={REVERSE_COST_PER_WEAR}>Lowest cost per wear to highest</option>
-        </select>
+        <div className='filter-sort-container'>
+          {clothes && clothes.length > 0 && <div className={filterStickerClass} onClick={onFilterUnworn}>👘 Unworn</div>}
+          <select onChange={handleChange}>
+            <option value="">Select sort</option>
+            {/* TODO: make this use arrows for up and down so there's less options to pick */}
+            <option value={ALPHABETICAL}>A to Z</option>
+            <option value={REVERSE_ALPHABETICAL}>Z to A</option>
+            <option value={NUM_WEARS}>Highest number of wears to lowest</option>
+            <option value={REVERSE_NUM_WEARS}>Lowest number of wears to highest</option>
+            <option value={COST_PER_WEAR}>Highest cost per wear to lowest</option>
+            <option value={REVERSE_COST_PER_WEAR}>Lowest cost per wear to highest</option>
+          </select>
+        </div>
       </div>
       {renderClothesSection()} 
     </div>

@@ -8,9 +8,9 @@ const Undo = ({ msg, onUndo, closeToast }) => {
 
   return (
     <div className='btn-undo'>
-      <p>
+      <div style={{ fontSize: '20px' }}>
         {msg} <button onClick={handleClick}>UNDO</button>
-      </p>
+      </div>
     </div>
   );
 };

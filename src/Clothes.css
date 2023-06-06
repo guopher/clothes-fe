@@ -88,6 +88,12 @@ p {
   width: 200px;
 }
 
+@media (max-width: 1025px) {
+  .filter-box {
+    width: 150px;
+  }
+}
+
 .item-pin {
   cursor: pointer;
   background-color: darkgray;
@@ -190,4 +196,50 @@ p {
 .cost-per-wear-amount-zero {
   color: #ff9e7a;
   font-weight: bold;
+}
+
+@media (max-width: 950px) {
+  .filter-unworn-off {
+    display: none;
+  }
+  .filter-unworn-on {
+    display: none;
+  }
+}
+
+.filter-unworn-off {
+  font-size: 14px;
+  text-align: center;
+  align-self: center;
+  margin-right: 10px;
+  cursor: pointer;
+  border-radius: 10px;
+  padding: 5px;
+  height: 22px;
+}
+
+.filter-unworn-on {
+  font-size: 14px;
+  text-align: center;
+  align-self: center;
+  margin-right: 10px;
+  cursor: pointer;
+  border-radius: 10px;
+  padding: 5px;
+  height: 22px;
+  background-color: #ff9e7a;
+  font-weight: bold;
+}
+
+.filter-unworn-off:hover {
+  color: #ff9e7a;
+}
+
+.filter-unworn-on:hover {
+  color: lightgray;
+}
+
+.filter-sort-container {
+  display: flex;
+  align-items: stretch;
 }

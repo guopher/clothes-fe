@@ -12,7 +12,7 @@ const Clothes = (props) => {
     const newNumWears = item.num_wears + 1
     let message = ''
     if (newNumWears >= 20) {
-      message = `You can use this ${item.item_name} yardwork now 🍂`
+      message = `You can use this ${item.item_name} for yardwork now 🍂`
     } else if (newNumWears >= 15) {
       message = "Wow you're really killing this 👊"
     } else if (newNumWears >= 10) {
@@ -47,15 +47,16 @@ const Clothes = (props) => {
     const item_id = item._id
     delete_item(item_id)
     props.onUpdateIsShow(item_id, false)
-    props.onUndoDelete(itemName, showAgain)
+    props.onUndoDelete(longItemName, showAgain)
   }
 
+  const longItemName =  `${item.company} ${item.item_name}`
+
   const itemName = () => {
-    const originalName = `${item.company} ${item.item_name}`
-    if (originalName.length <= MAX_LENGTH_ITEM_NAME) {
-      return originalName
+    if (longItemName.length <= MAX_LENGTH_ITEM_NAME) {
+      return longItemName
     }
-    return `${originalName.substring(0, MAX_LENGTH_ITEM_NAME - 1)}...`
+    return `${longItemName.substring(0, MAX_LENGTH_ITEM_NAME - 1)}...`
   }
 
   const handlePin = () => {
@@ -99,7 +100,6 @@ const Clothes = (props) => {
           <div className='cost-per-wear-label'>Cost/Wear:</div>
           <div className={costPerWearClass()}>{costPerWear()}</div>
         </div>
-        {/* <p className='add-wears' onClick={updateNumWears}>Number of wears: {item.num_wears}</p> */}
         <div className='delete-item' onClick={updateIsShow} >Delete</div>
       </div>
     </div>
