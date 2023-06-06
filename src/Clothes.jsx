@@ -1,6 +1,7 @@
 import {add_wears, pin_item} from './requests'
 import {delete_item} from './requests'
 import './Clothes.css';
+import { MAX_LENGTH_ITEM_NAME } from './constants';
 
 const Clothes = (props) => {
   const updateNumWears = () => {
@@ -49,7 +50,13 @@ const Clothes = (props) => {
     props.onUndoDelete(itemName, showAgain)
   }
 
-  const itemName = `${item.company} ${item.item_name}`
+  const itemName = () => {
+    const originalName = `${item.company} ${item.item_name}`
+    if (originalName.length <= MAX_LENGTH_ITEM_NAME) {
+      return originalName
+    }
+    return `${originalName.substring(0, MAX_LENGTH_ITEM_NAME - 1)}...`
+  }
 
   const handlePin = () => {
     if (!item.is_pinned || item.is_pinned === undefined) {
@@ -80,7 +87,7 @@ const Clothes = (props) => {
     <div className ='clothes'>
       <div className='clothes-info'>
         <div onClick={handlePin} className='pin-icon'>📌</div>
-        <div className='item-name'>{itemName}</div>
+        <div className='item-name'>{itemName()}</div>
         <div className='increment-wears-container'>
           <div className='number-of-wears-text'>Wears</div>
           <div className='increment-wears-btn-container'>
