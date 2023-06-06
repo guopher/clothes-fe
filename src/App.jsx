@@ -9,7 +9,7 @@ import { getBearerToken } from './utilities';
 import { POST, jwtToken } from './constants';
 import AddItem from './AddItem';
 import TopBar from './TopBar';
-import { JUICY_MANGO, JUICY_MANGO_SUBHEADING } from './strings';
+import { JUICY_MANGO, JUICY_MANGO_SUBHEADING, MOBILE_RELEASE } from './strings';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Undo from './Undo';
@@ -27,8 +27,6 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [clothes, setClothes] = useState([])
   const [error, setError] = useState(null)
-
-  console.log(`error: ${error}`)
 
   const undoComponent = (itemName, onClickConfirm) => (
     <Undo msg={`${itemName} deleted`} 
@@ -362,7 +360,11 @@ const App = () => {
           <div className='logout-title'>{JUICY_MANGO}</div>
         </div>
         <div className='logout-subtitle'>{JUICY_MANGO_SUBHEADING}</div>
-        <GoogleLogin onSuccess={onSuccess} onError={onError} />
+        <div className='no-mobile-support'>Mobile interface coming soon!</div>
+        <div className='no-mobile-support'>Sign up to get an <a href={MOBILE_RELEASE} target='_blank'>email</a> when it's here</div>
+        <div className='google-auth'>
+          <GoogleLogin onSuccess={onSuccess} onError={onError} />
+        </div>
       </div>
     )
   }
@@ -380,7 +382,6 @@ const App = () => {
       <header className="App-header">
       </header>
        <body>
-          {/* {error ? <ErrorComponent /> : null} */}
           {isLoggedIn && !isLoading && !error ? loggedInElement() : loggedOutElement()}
        </body>
     </div>

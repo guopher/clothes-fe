@@ -171,6 +171,8 @@ label {
   justify-content: center;
   flex-direction: column;
   min-height: 100vh;
+  width: 90%;
+  align-self: center;
 }
 
 h5 {
@@ -223,7 +225,32 @@ h5 {
   align-self: center;
 }
 
+@media (max-width: 450px) {
+  .logout-title{
+    font-size: 36px;
+  }
+}
+
 .logout-subtitle {
   font-size: 24px;
   margin-bottom: 30px;
+}
+
+.no-mobile-support {
+  font-size: 16px;
+}
+
+@media (max-width: 420px) {
+  .google-auth {
+    display: none;
+  }
+  .no-mobile-support {
+    display: visible;
+  }
+}
+
+@media (min-width: 420px) {
+  .no-mobile-support {
+    display: None;
+  }
 }
