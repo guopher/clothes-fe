@@ -14,6 +14,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Undo from './Undo';
 import ErrorComponent from './ErrorComponent';
+import NavBar from './NavBar';
 
 const App = () => {
   const [companyName, setCompanyName] = useState("")
@@ -27,6 +28,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [clothes, setClothes] = useState([])
   const [error, setError] = useState(null)
+  const [isShowAddItem, setShowAddItem] = useState(false)
 
   const undoComponent = (itemName, onClickConfirm) => (
     <Undo msg={`${itemName} deleted`} 
@@ -224,6 +226,7 @@ const App = () => {
     }
 
     addItem(itemName, companyName, priceBought)
+    setShowAddItem(false)
   }
 
   const fetchGoogleUserInfo = async (response) => {
@@ -320,6 +323,39 @@ const App = () => {
   // const closetTitle = clothes.length > 0 ? `Closet (${clothes.length})` : 'Closet'
   const closetTitle = 'Closet'
 
+  const onAddItemTapped = () => {
+    console.log('addItem tappeddddd')
+    console.log(isShowAddItem)
+    setShowAddItem(!isShowAddItem)
+  }
+
+  const renderModal = () => {
+    // const overlayClass = `overlay ${isShowAddItem ? 'show' : ''}`
+    const modalClass = `modal ${isShowAddItem ? 'show' : ''}`
+    console.log(`isShowAddItem: ${isShowAddItem}`)
+    if (isShowAddItem) {
+      return (
+          <div className={'overlay'}>
+            <div className={modalClass}>
+              <div style= {{ cursor: 'pointer' }} onClick={() => setShowAddItem(false)}>X</div>
+              <AddItem 
+                onHandleSubmit={handleSubmit}
+                itemName={itemName}
+                companyName={companyName}
+                priceBought={priceBought}
+                onSetItemName={setItemName}
+                onSetCompanyName={setCompanyName}
+                onSetPriceBought={setPriceBought}
+                isModal={true}
+                />
+            </div>
+          </div>
+      )
+    } else {
+      return null
+    }
+  }
+
   const loggedInElement = () => (
     <div style={{ marginTop: '20px', marginBottom: '20px' }}>
       <ToastContainer autoClose={5000} limit={3} />
@@ -358,7 +394,9 @@ const App = () => {
             />
           </div>
         </div>
+      {renderModal()}
       </div>
+      <NavBar onAddItemTapped={onAddItemTapped} />
     </div>
   ) 
 

@@ -10,12 +10,16 @@ const AddItem = (props) => {
   const companyName = props.companyName
   const priceBought = props.priceBought
 
+  const isModal = props.isModal
+
   const isSubmitEnabled = () => {
     return props.itemName !== '' && props.companyName !== '' && props.priceBought !== ''
   }
 
+  const containerClass = `add-item-container ${isModal ? 'active' : ''}`
+
   return (
-    <div className='add-item-container'>
+    <div className={containerClass}>
       <div className='add-clothing-section-header '>Add Clothing Item</div>
       <div className='add-item-view'>
         <form className='add-item-form' onSubmit={handleSubmit}>

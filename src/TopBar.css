@@ -25,10 +25,21 @@
   }
 }
 
+/* .nav-bar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  background-color: #f1f1f1;
+} */
+
 @media (max-width: 700px) {
   .top-bar {
     display: none;
   }
+  /* .nav-bar {
+    display: 
+  } */
   .overall-view {
     margin-top: 0px;
   }
