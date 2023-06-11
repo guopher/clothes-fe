@@ -170,7 +170,7 @@ const ClothesList = ({ isLoggedIn, onAddWear, onUndoDelete, clothes, get_items, 
         </div>
         <div className='filter-sort-container'>
           {clothes && clothes.length > 0 && <div className={filterStickerClass} onClick={onFilterUnworn}>👘 Unworn</div>}
-          <select onChange={handleChange}>
+          <select className='filter-select' onChange={handleChange}>
             <option value="">Select sort</option>
             {/* TODO: make this use arrows for up and down so there's less options to pick */}
             <option value={ALPHABETICAL}>A to Z</option>

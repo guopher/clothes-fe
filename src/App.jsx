@@ -330,14 +330,14 @@ const App = () => {
   }
 
   const renderModal = () => {
-    // const overlayClass = `overlay ${isShowAddItem ? 'show' : ''}`
-    const modalClass = `modal ${isShowAddItem ? 'show' : ''}`
-    console.log(`isShowAddItem: ${isShowAddItem}`)
     if (isShowAddItem) {
       return (
           <div className={'overlay'}>
-            <div className={modalClass}>
-              <div style= {{ cursor: 'pointer' }} onClick={() => setShowAddItem(false)}>X</div>
+            <div className='modal'>
+              <div className='modal-close-container'>
+                <div className='modal-close-btn' onClick={() => setShowAddItem(false)}>X</div>
+                <div className='modal-close-container-space'></div>
+              </div>
               <AddItem 
                 onHandleSubmit={handleSubmit}
                 itemName={itemName}
@@ -357,7 +357,7 @@ const App = () => {
   }
 
   const loggedInElement = () => (
-    <div style={{ marginTop: '20px', marginBottom: '20px' }}>
+    <div>
       <ToastContainer autoClose={5000} limit={3} />
       <TopBar 
         onLogout={logout}
@@ -396,7 +396,7 @@ const App = () => {
         </div>
       {renderModal()}
       </div>
-      <NavBar onAddItemTapped={onAddItemTapped} />
+      <NavBar onAddItemTapped={onAddItemTapped} onLogout={logout} />
     </div>
   ) 
 
@@ -408,8 +408,6 @@ const App = () => {
           <div className='logout-title'>{JUICY_MANGO}</div>
         </div>
         <div className='logout-subtitle'>{JUICY_MANGO_SUBHEADING}</div>
-        <div className='no-mobile-support'>Mobile interface coming soon!</div>
-        <div className='no-mobile-support'>Sign up to get an <a href={MOBILE_RELEASE} target='_blank'>email</a> when it's here</div>
         <div className='google-auth'>
           <GoogleLogin onSuccess={onSuccess} onError={onError} />
         </div>

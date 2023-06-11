@@ -98,6 +98,9 @@ body {
 .form-group input {
   font-size: 20px;
   border-radius: 5px;
+  background-color: #202124;
+  border: none;
+  color: white;
 }
 
 .label-container {
@@ -231,7 +234,13 @@ h5 {
 
 @media (max-width: 1800px) {
   .overall-view {
-    margin-top: 100px;
+    margin-top: 130px;
+  }
+}
+
+@media (max-width: 767px) {
+  .overall-view {
+    width: 90%;
   }
 }
 
@@ -268,9 +277,9 @@ h5 {
 }
 
 @media (max-width: 420px) {
-  .google-auth {
+  /* .google-auth {
     display: none;
-  }
+  } */
   .no-mobile-support {
     display: visible;
   }
@@ -304,6 +313,25 @@ h5 {
   height: 100%;
   /* transform: translateY(100%);
   transition: transform 1.0s ease; */
+}
+
+.modal-close-container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.modal-close-btn {
+  flex-basis: 20%;
+  padding: 10px;
+  padding-right: 10px;
+  padding-left: 10px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.modal-close-container-space {
+  flex-basis: 70%;
 }
 
 /* .modal.show {

@@ -2,6 +2,7 @@ import './App.css'
 import './TopBar.css'
 import { GoogleLogin } from '@react-oauth/google';
 import { BUG_FORM, FEEDBACK_FORM, JUICY_MANGO } from './strings';
+import { giveFeedback, submitBug } from './ExternalLinks';
 
 const TopBar = (props) => {
   const onLogout = props.onLogout
@@ -14,13 +15,13 @@ const TopBar = (props) => {
 
   // console.log(`TopBar isLoading: ${props.isLoading}`)
 
-  const giveFeedback = () => {
-    window.open(FEEDBACK_FORM, '_blank')
-  }
+  // const giveFeedback = () => {
+  //   window.open(FEEDBACK_FORM, '_blank')
+  // }
 
-  const submitBug = () => {
-    window.open(BUG_FORM, '_blank')
-  }
+  // const submitBug = () => {
+  //   window.open(BUG_FORM, '_blank')
+  // }
 
   const onTitleClick = () => {
     alert('sorry, this button will have functionality coming soon! 😊')

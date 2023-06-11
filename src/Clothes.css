@@ -86,6 +86,9 @@ p {
   margin-left: 10px;
   font-size: 20px;
   width: 200px;
+  background-color: #202124;
+  color: white;
+  border: none;
 }
 
 @media (max-width: 1025px) {
@@ -198,12 +201,16 @@ p {
   font-weight: bold;
 }
 
+.filter-select {
+  margin-left: 5px;
+  background-color: #202124;
+  color: white;
+  border-radius: 5px;
+}
+
 @media (max-width: 950px) {
-  .filter-unworn-off {
-    display: none;
-  }
-  .filter-unworn-on {
-    display: none;
+  .filter-select {
+    width: 100px;
   }
 }
 
@@ -242,4 +249,24 @@ p {
 .filter-sort-container {
   display: flex;
   align-items: stretch;
+}
+
+@media (max-width: 767px) {
+  .filter-select {
+    width: 150px;
+  }
+  .filter-unworn-off {
+    display: none;
+  }
+  .filter-unworn-on {
+    display: none;
+  }
+  .filter-items-container {
+    width: 90%;
+    justify-content: space-between;
+  }
+
+  .clothes-container {
+    width: 90%;
+  }
 }
