@@ -400,6 +400,23 @@ const App = () => {
     </div>
   ) 
 
+  const renderMobileLogin = () => {
+    if (familyName === 'Guo') {
+      return (
+        <div className='google-auth'>
+          <GoogleLogin onSuccess={onSuccess} onError={onError} />
+        </div>
+      )
+    } else {
+      return (
+        <>
+          <div className='no-mobile-support'>Mobile interface coming soon!</div>
+          <div className='no-mobile-support'>Sign up to get an <a href={MOBILE_RELEASE} target='_blank'>email</a> when it's here</div>
+        </>
+      )
+    }
+  }
+
   const loggedOutElement = () => {
     return (
       <div className='logged-out-container'>
@@ -408,9 +425,7 @@ const App = () => {
           <div className='logout-title'>{JUICY_MANGO}</div>
         </div>
         <div className='logout-subtitle'>{JUICY_MANGO_SUBHEADING}</div>
-        <div className='google-auth'>
-          <GoogleLogin onSuccess={onSuccess} onError={onError} />
-        </div>
+        {renderMobileLogin()}
       </div>
     )
   }
