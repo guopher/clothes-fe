@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/juicy-mango/static/css/main.6d479711.css",
-    "main.js": "/juicy-mango/static/js/main.8364644a.js",
+    "main.css": "/juicy-mango/static/css/main.4cd1d44c.css",
+    "main.js": "/juicy-mango/static/js/main.855974bc.js",
     "static/js/787.19efcd05.chunk.js": "/juicy-mango/static/js/787.19efcd05.chunk.js",
     "static/media/dog.jpeg": "/juicy-mango/static/media/dog.5cf3a4bb5b3d8e23915d.jpeg",
     "static/media/mango.png": "/juicy-mango/static/media/mango.de6ee78cd404baa6bb2c.png",
     "static/media/closet.png": "/juicy-mango/static/media/closet.3169b42d0151495690de.png",
     "index.html": "/juicy-mango/index.html",
-    "main.6d479711.css.map": "/juicy-mango/static/css/main.6d479711.css.map",
-    "main.8364644a.js.map": "/juicy-mango/static/js/main.8364644a.js.map",
+    "main.4cd1d44c.css.map": "/juicy-mango/static/css/main.4cd1d44c.css.map",
+    "main.855974bc.js.map": "/juicy-mango/static/js/main.855974bc.js.map",
     "787.19efcd05.chunk.js.map": "/juicy-mango/static/js/787.19efcd05.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.6d479711.css",
-    "static/js/main.8364644a.js"
+    "static/css/main.4cd1d44c.css",
+    "static/js/main.855974bc.js"
   ]
 }
