@@ -270,3 +270,22 @@ p {
     width: 90%;
   }
 }
+
+.clear-button {
+  border: none;
+  color: white;
+  background-color: #202124;
+  position: absolute;
+  font-size: 14px;
+  right: 3px;
+  cursor: pointer;
+  top: 5px;
+  padding-right: 4px;
+  padding-left: 12px;
+}
+
+@media (min-width: 767px) {
+  .clear-button {
+    top: 9px;
+  }
+}

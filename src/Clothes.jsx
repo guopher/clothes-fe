@@ -27,7 +27,6 @@ const Clothes = (props) => {
       message = 'Keep it up!'
     }
     props.onAddWear(message)
-    props.onUpdateFilterValue('')
   }
 
   const item = props.clothes
