@@ -73,6 +73,7 @@ const ClothesList = ({ isLoggedIn, onAddWear, onUndoDelete, clothes, get_items, 
                   onUpdatePin={updateIsPin} 
                   onUndoDelete={onUndoDelete}
                   onAddWear={onAddWear}
+                  onUpdateFilterValue={setFilterValue}
                   />
     ))
 
@@ -109,6 +110,7 @@ const ClothesList = ({ isLoggedIn, onAddWear, onUndoDelete, clothes, get_items, 
                   onUpdatePin={updateIsPin} 
                   onUndoDelete={onUndoDelete}
                   onAddWear={onAddWear}
+                  onUpdateFilterValue={setFilterValue}
                   />
     ))
     return pinned
@@ -165,7 +167,7 @@ const ClothesList = ({ isLoggedIn, onAddWear, onUndoDelete, clothes, get_items, 
       <div className='filter-items-container'>
         <div>
           <div> 
-            <input className='filter-box' type="text" placeholder='Filter' onChange={filterOnChange}/>
+            <input className='filter-box' type="text" placeholder='Filter' value={filterValue} onChange={filterOnChange}/>
           </div>
         </div>
         <div className='filter-sort-container'>
